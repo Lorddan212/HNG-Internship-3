@@ -1,0 +1,111 @@
+<template>
+  <div class="landing">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Welcome to <span class="highlight">TicketPro</span></h1>
+        <p>
+          Manage your tickets effortlessly — create, track, and resolve issues in one place.
+        </p>
+
+        <div class="buttons">
+          <router-link to="/auth/login" class="btn secondary-btn">Get Started</router-link>
+        </div>
+      </div>
+      
+    </section>
+
+      </div>
+</template>
+
+<script setup>
+// No script needed for now
+</script>
+
+<style scoped>
+.landing {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #0000ff, #00ffff);
+  color: white;
+  padding: 6rem 1.5rem 4rem;
+  flex: 1;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  z-index: 2;
+  position: relative;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.hero .highlight {
+  color: #00ffff;
+}
+
+.hero p {
+  margin: 1rem 0 2rem;
+  font-size: 1.2rem;
+  color: #f0f0f0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.8rem 1.8rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.primary-btn {
+  background: #ffffff;
+  color: #0000ff;
+}
+
+.primary-btn:hover {
+  background: #00ffff;
+  color: #000;
+}
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+  .circle {
+    width: 70px;
+    height: 70px;
+  }
+}
+</style>

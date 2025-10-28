@@ -1,0 +1,10 @@
+{
+  "tickets": [
+    {
+      "id": 1,
+      "title": "System Error",
+      "status": "open",
+      "description": "A test issue"
+    }
+  ]
+}
