@@ -233,7 +233,8 @@ onMounted(loadTickets);
 }
 
 .no-tickets {
-  color: #666;
+  text-align: center;
+  color: #080606;
   font-size: 1.1rem;
   margin-top: 2rem;
 }

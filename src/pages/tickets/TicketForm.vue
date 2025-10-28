@@ -113,9 +113,10 @@ const handleSubmit = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100dvh; /* ✅ dynamic viewport height handles mobile keyboards better */
   background: linear-gradient(135deg, #0000ff, #00ffff);
-  padding: 2rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
 }
 
 .ticket-form-container {
@@ -123,11 +124,16 @@ const handleSubmit = () => {
   color: #000;
   border-radius: 16px;
   padding: 2rem;
-  max-width: 600px;
   width: 100%;
+  max-width: 600px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
 }
 
+/* Heading */
 h1 {
   text-align: center;
   font-size: 1.8rem;
@@ -135,6 +141,7 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+/* Form */
 .ticket-form {
   display: flex;
   flex-direction: column;
@@ -160,13 +167,21 @@ textarea {
   padding: 0.6rem;
   font-size: 1rem;
   outline: none;
-  transition: 0.3s;
+  transition: border-color 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #00ffff;
+  box-shadow: 0 0 4px rgba(0, 255, 255, 0.3);
 }
 
 textarea {
   resize: vertical;
 }
 
+/* Actions */
 .form-actions {
   display: flex;
   justify-content: space-between;
@@ -176,6 +191,7 @@ textarea {
   margin-top: 1rem;
 }
 
+/* Buttons */
 .btn {
   padding: 0.8rem 1.4rem;
   border-radius: 8px;
@@ -184,6 +200,7 @@ textarea {
   font-weight: 600;
   transition: all 0.3s ease;
   text-decoration: none;
+  text-align: center;
 }
 
 .submit-btn {
@@ -206,9 +223,24 @@ textarea {
   color: #000;
 }
 
-@media (max-width: 600px) {
+/* ✅ Improved mobile responsiveness */
+@media (max-width: 768px) {
   .ticket-form-container {
-    padding: 2rem 1.2rem;
+    padding: 1.5rem 1rem;
+    max-width: 90%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 1.5rem;
   }
 }
 </style>

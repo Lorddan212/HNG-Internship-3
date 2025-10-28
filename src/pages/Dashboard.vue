@@ -39,6 +39,8 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const userName = ref("User");
+const STORAGE_KEY = "ticketapp_tickets";
+
 const stats = ref({
   total: 0,
   open: 0,
@@ -46,40 +48,44 @@ const stats = ref({
   closed: 0,
 });
 
-const loadTicketStats = () => {
-  const storedTickets = JSON.parse(localStorage.getItem("ticketapp_tickets")) || [];
-  stats.value.total = storedTickets.length;
-  stats.value.open = storedTickets.filter(t => t.status === "open").length;
-  stats.value.inProgress = storedTickets.filter(t => t.status === "in-progress").length;
-  stats.value.closed = storedTickets.filter(t => t.status === "closed").length;
-};
-
-const loadUser = () => {
-  const storedUser = JSON.parse(localStorage.getItem("ticketapp_user"));
-  if (storedUser && storedUser.firstName && storedUser.lastName) {
-    userName.value = `${storedUser.firstName} ${storedUser.lastName}`;
-  } else if (storedUser && storedUser.email) {
-    userName.value = storedUser.email;
+// ✅ Load user info from localStorage session
+onMounted(() => {
+  const session = JSON.parse(localStorage.getItem("ticketapp_session"));
+  if (session?.firstName) {
+    userName.value = `${session.firstName} ${session.lastName || ""}`;
+  } else if (session?.email) {
+    userName.value = session.email;
   } else {
     router.push("/auth/login");
   }
-};
 
-onMounted(() => {
-  loadUser();
   loadTicketStats();
+
+  // ✅ Listen for ticket updates (triggered by TicketForm.vue)
   window.addEventListener("tickets-updated", loadTicketStats);
 });
 
+// ✅ Cleanup listener
 onBeforeUnmount(() => {
   window.removeEventListener("tickets-updated", loadTicketStats);
 });
 
-const handleLogout = () => {
-  localStorage.removeItem("ticketapp_user");
-  router.push("/auth/login");
-};
+// ✅ Function to compute live stats
+function loadTicketStats() {
+  const tickets = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
+  stats.value = {
+    total: tickets.length,
+    open: tickets.filter((t) => t.status === "open").length,
+    inProgress: tickets.filter((t) => t.status === "in_progress").length,
+    closed: tickets.filter((t) => t.status === "closed").length,
+  };
+}
+
+function handleLogout() {
+  localStorage.removeItem("ticketapp_session");
+  router.push("/auth/login");
+}
 </script>
 
 <style scoped>
