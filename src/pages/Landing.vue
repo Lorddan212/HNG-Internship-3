@@ -37,8 +37,13 @@
   position: relative;
   background: linear-gradient(135deg, #0000ff, #00ffff);
   color: white;
-  padding: 6rem 1.5rem 4rem;
-  flex: 1;
+  height: 100vh; /* Full viewport height */
+  display: flex; /* Enables centering */
+  justify-content: center; /* Horizontal center */
+  align-items: center; /* Vertical center */
+  text-align: center;
+  padding: 2rem;
+  overflow: hidden;
 }
 
 .hero-content {
@@ -87,7 +92,17 @@
   background: #00ffff;
   color: #000;
 }
+.secondary-btn {
+  background: white;
+  border: 2px solid white;
+  color: #0000ff;
+}
 
+.secondary-btn:hover {
+  background: #00ffff;
+  border: 2px solid #00ffff;
+  color: #000000;
+}
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }

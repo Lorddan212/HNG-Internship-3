@@ -1,7 +1,7 @@
 <template>
   <div class="tickets-page">
     <div class="tickets-container">
-      <h1 class="title">Your Tickets 🎫</h1>
+      <h1 class="title">🎫 Your Tickets</h1>
 
       <div class="ticket-actions">
         <router-link to="/dashboard" class="btn back-btn">← Back to Dashboard</router-link>
@@ -13,11 +13,7 @@
       </div>
 
       <div v-else class="tickets-grid">
-        <div
-          v-for="ticket in tickets"
-          :key="ticket.id"
-          class="ticket-card"
-        >
+        <div v-for="ticket in tickets" :key="ticket.id" class="ticket-card">
           <h2>{{ ticket.title }}</h2>
           <span :class="['status-tag', ticket.status]">{{ formatStatus(ticket.status) }}</span>
 
@@ -39,21 +35,24 @@ import { ref, onMounted } from "vue";
 const tickets = ref([]);
 
 const loadTickets = () => {
-  const saved = JSON.parse(localStorage.getItem("tickets")) || [];
+  const saved = JSON.parse(localStorage.getItem("ticketapp_tickets")) || [];
   tickets.value = saved;
 };
 
+// Delete ticket and notify dashboard
 const deleteTicket = (id) => {
   if (confirm("Are you sure you want to delete this ticket?")) {
     const updated = tickets.value.filter((t) => t.id !== id);
     tickets.value = updated;
-    localStorage.setItem("tickets", JSON.stringify(updated));
+    localStorage.setItem("ticketapp_tickets", JSON.stringify(updated));
+    // Notify dashboard immediately
+    window.dispatchEvent(new Event("tickets-updated"));
   }
 };
 
 const formatStatus = (status) => {
   if (status === "open") return "Open";
-  if (status === "in_progress") return "In Progress";
+  if (status === "in-progress") return "In Progress";
   if (status === "closed") return "Closed";
   return status;
 };
@@ -62,6 +61,7 @@ onMounted(loadTickets);
 </script>
 
 <style scoped>
+/* (keep your same styles unchanged) */
 .tickets-page {
   display: flex;
   justify-content: center;
@@ -70,9 +70,8 @@ onMounted(loadTickets);
   background: linear-gradient(135deg, #0000ff, #00ffff);
   padding: 2rem;
 }
-
 .tickets-container {
-  background: rgba(255, 255, 255, 0.15);
+  background: #ffffff;
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 2.5rem;
@@ -87,6 +86,7 @@ onMounted(loadTickets);
   font-size: 2rem;
   margin-bottom: 1.5rem;
   font-weight: 700;
+  color: #0000ff;
 }
 
 .ticket-actions {
@@ -108,21 +108,33 @@ onMounted(loadTickets);
 }
 
 .add-btn {
-  background: linear-gradient(90deg, #0000ff, #00ffff);
+ background: #0000ff;
   color: white;
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .add-btn:hover {
-  background: linear-gradient(90deg, #00ffff, #0000ff);
+  background: #00ffff;
+   color: #000;
 }
 
 .back-btn {
-  background: rgba(255, 255, 255, 0.25);
+  background: #0000ff;
   color: white;
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: #00ffff;
+   color: #000;
 }
 
 .tickets-grid {
@@ -138,17 +150,22 @@ onMounted(loadTickets);
   text-align: left;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
+.ticket-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
 
 .ticket-card h2 {
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 0.8rem;
+  color: #0000ff;
 }
 
 .desc {
   font-size: 0.9rem;
   margin: 0.5rem 0 1rem;
-  color: #e0f7ff;
+  color: #000000;
 }
 
 .status-tag {
@@ -160,42 +177,63 @@ onMounted(loadTickets);
 }
 
 .status-tag.open {
-  background: #b2f5ea;
-  color: #065f46;
+  background: #ccfff5;
+  color: #007f5f;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .status-tag.in_progress {
-  background: #fef3c7;
-  color: #92400e;
+  background: #fff8cc;
+  color: #b08b00;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .status-tag.closed {
-  background: #e5e7eb;
-  color: #374151;
+  background: #e0e0e0;
+  color: #444;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 1rem;
 }
 
 .edit {
-  color: #00ffff;
+  color: #0000ff;
   font-weight: 600;
   cursor: pointer;
 }
-
+.edit:hover {
+  color: #00ffff;
+}
 .delete {
-  color: #ff4d4f;
+  color: #fb0004;
   background: none;
   border: none;
   font-weight: 600;
   cursor: pointer;
 }
+.delete:hover {
+  color: #0000ff;
+}
 
 .no-tickets {
-  color: #f0f8ff;
+  color: #666;
   font-size: 1.1rem;
   margin-top: 2rem;
 }
@@ -209,5 +247,5 @@ onMounted(loadTickets);
   .tickets-container {
     padding: 2rem 1.2rem;
   }
-}
+};
 </style>

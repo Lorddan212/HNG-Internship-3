@@ -58,10 +58,13 @@ const description = ref("");
 const editMode = ref(false);
 const ticketId = route.params.id || null;
 
+// Use unified localStorage key
+const STORAGE_KEY = "ticketapp_tickets";
+
 onMounted(() => {
   if (ticketId) {
     editMode.value = true;
-    const tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+    const tickets = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     const existing = tickets.find((t) => t.id === parseInt(ticketId));
     if (existing) {
       title.value = existing.title;
@@ -72,28 +75,35 @@ onMounted(() => {
 });
 
 const handleSubmit = () => {
-  const tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+  const tickets = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
   if (editMode.value) {
+    // Update existing ticket
     const updatedTickets = tickets.map((t) =>
       t.id === parseInt(ticketId)
         ? { ...t, title: title.value, status: status.value, description: description.value }
         : t
     );
-    localStorage.setItem("tickets", JSON.stringify(updatedTickets));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedTickets));
     alert("✅ Ticket updated successfully!");
   } else {
+    // Create new ticket
     const newTicket = {
       id: Date.now(),
       title: title.value,
       status: status.value,
       description: description.value,
+      createdAt: new Date().toISOString(),
     };
     tickets.push(newTicket);
-    localStorage.setItem("tickets", JSON.stringify(tickets));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
     alert("✅ Ticket created successfully!");
   }
 
+  // Dispatch custom event to notify TicketList.vue
+  window.dispatchEvent(new Event("tickets-updated"));
+
+  // Redirect back to tickets page
   router.push("/tickets");
 };
 </script>
@@ -109,22 +119,20 @@ const handleSubmit = () => {
 }
 
 .ticket-form-container {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
+  background: #fff;
+  color: #000;
   border-radius: 16px;
-  padding: 2.5rem;
-  width: 100%;
+  padding: 2rem;
   max-width: 600px;
-  color: white;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  text-align: left;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 1.5rem;
   font-size: 1.8rem;
-  font-weight: 700;
+  color: #0000ff;
+  margin-bottom: 1.5rem;
 }
 
 .ticket-form {
@@ -146,12 +154,13 @@ label {
 input,
 select,
 textarea {
-  padding: 0.8rem;
+  width: 100%;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  border: none;
-  outline: none;
+  padding: 0.6rem;
   font-size: 1rem;
-  color: #333;
+  outline: none;
+  transition: 0.3s;
 }
 
 textarea {
@@ -178,21 +187,23 @@ textarea {
 }
 
 .submit-btn {
-  background: linear-gradient(90deg, #0000ff, #00ffff);
+  background: #0000ff;
   color: white;
 }
 
 .submit-btn:hover {
-  background: linear-gradient(90deg, #00ffff, #0000ff);
+  background: #00ffff;
+  color: #000;
 }
 
 .back-btn {
-  background: rgba(255, 255, 255, 0.25);
+  background: #0000ff;
   color: white;
 }
 
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: #00ffff;
+  color: #000;
 }
 
 @media (max-width: 600px) {

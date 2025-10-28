@@ -98,7 +98,7 @@ const handleLogin = () => {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   padding: 2.5rem;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   text-align: center;
 }
 
@@ -109,7 +109,7 @@ h2 {
 }
 
 .subtitle {
-  color: #666;
+  color: #161414;
   font-size: 0.95rem;
   margin-bottom: 2rem;
 }
@@ -123,7 +123,7 @@ label {
   display: block;
   margin-bottom: 0.4rem;
   font-weight: 600;
-  color: #0000ff;
+  color: #000000;
 }
 
 input {
@@ -145,30 +145,38 @@ input:focus {
   padding: 0.8rem;
   border: none;
   border-radius: 8px;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   color: white;
-  background: linear-gradient(90deg, #0000ff, #00ffff);
+  background: #0000ff;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn:hover {
-  background: linear-gradient(90deg, #00ffff, #0000ff);
+  background: #00ffff;
+  color: #000000;
+  font-weight: 700;
 }
 
 .switch {
   margin-top: 1.2rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .switch a {
   color: #0000ff;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .error {
   color: red;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.success {
+  color: green;
+  font-size: 1rem;
   margin-bottom: 1rem;
 }
 </style>
